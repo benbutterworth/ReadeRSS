@@ -25,7 +25,6 @@ def get_feed_info(feed):
     feedInfo = {"feed-title": feed.feed.title, "feed-link": feed.feed.link}
     posts = feed.entries
     postsList = []
-
     for post in posts:
         postinfo = dict()
         try:
@@ -45,7 +44,6 @@ def get_feed_info(feed):
         except Exception:
             pass
         postsList.append(postinfo)
-
     feedInfo["posts"] = postsList
     return feedInfo
 
@@ -57,10 +55,11 @@ def list_post_titles(feedinfo):
     return 0
 
 def get_keywords(keywordsPath):
+    """combine keywords from a text file into a list"""
     with open(keywordsPath) as keywordsfile:
          keywordSTR = keywordsfile.read()
     keywords = keywordSTR.split("\n")
-    if keywords[-1] == '':
+    if keywords[-1] == '': # remove trailing '' from split method
         keywords.pop(-1)
     return keywords
 
@@ -86,12 +85,16 @@ if __name__ == "__main__":
     keywordsPath = "../keywords.txt"
     keywords = get_keywords(keywordsPath)
 
-    summary = []
+    summaries = []
     for feed in feeds:
+        summary = []
         # list_post_titles(feed)
         for filtered_post in filter_posts(feed):
             summary.append(filtered_post)
-
-    for post in summary:
-        print(post["title"])
-        print("\t", post["link"])
+        summaries.append({"source":feed["feed-title"], "posts":summary})
+        
+    for summary in summaries:
+        print("\n", summary["source"].upper(), "\n")
+        for post in summary["posts"]:
+            print(post["title"])
+            print("\t", post["link"])
