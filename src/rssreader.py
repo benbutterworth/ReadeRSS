@@ -79,10 +79,15 @@ def filter_posts(feed):
 
 
 if __name__ == "__main__":
+    print("PATH::", os.getcwd())
+    # confirmPath = str(input("Is this path correct? (Y/n)")) == 'Y'
+    
     feedsCSVpath = "../rssfeeds.csv"
+    feedsCSVpath = str(input("Enter relative path to rssfeeds: "))
     feeds = get_feeds(feedsCSVpath)
 
-    keywordsPath = "../keywords.txt"
+    keywordsPath = "../quantumkeywords.txt"
+    keywordsPath = str(input("Enter relative file path to keywords: "))
     keywords = get_keywords(keywordsPath)
 
     summaries = []
